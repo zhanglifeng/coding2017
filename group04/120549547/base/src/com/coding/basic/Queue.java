@@ -1,5 +1,5 @@
 package com.coding.basic;
-import com.coding.basic.*;
+
 public class Queue {
 	private LinkedList list;
 	

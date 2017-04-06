@@ -1,6 +1,5 @@
 package com.coding.basic;
 
-import com.coding.basic.exception.*;
 public class ArrayList implements List {
 	
 	private int size;

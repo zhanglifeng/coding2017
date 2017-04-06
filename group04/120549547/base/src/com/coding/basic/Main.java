@@ -1,5 +1,4 @@
 package com.coding.basic;
-import com.coding.basic.*;
 
 class Main{
 
