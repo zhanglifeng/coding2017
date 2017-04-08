@@ -6,8 +6,6 @@ import javax.ws.rs.HEAD;
 
 import javassist.expr.NewArray;
 
-import com.coding.basic.*;
-
 
 public class ArrayUtil extends ArrayList {
 	

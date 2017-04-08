@@ -1,5 +1,5 @@
 import org.junit.Test;
-import com.coding.basic.*;
+
 import java.lang.Object;
 
 import static org.junit.Assert.assertEquals;

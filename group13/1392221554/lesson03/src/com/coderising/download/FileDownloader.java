@@ -5,7 +5,6 @@ import java.io.RandomAccessFile;
 import jdk.nashorn.internal.ir.Flags;
 
 import com.coderising.download.api.Connection;
-import com.coderising.download.impl.*;
 import com.coderising.download.api.ConnectionException;
 import com.coderising.download.api.ConnectionManager;
 import com.coderising.download.api.DownloadListener;
@@ -15,29 +14,29 @@ public class FileDownloader {
 	String url;
 	DownloadListener listener;
 	ConnectionManager cm;
-    private RandomAccessFile raf;// ½«ÏÂÔØµ½µÄ×Ö½ÚÊä³öµ½rafÖĞ  
-    final int DOWN_THREAD_NUM = 3;//¶¨Òå¼¸¸öÏß³ÌÈ¥ÏÂÔØ   
+    private RandomAccessFile raf;// ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½Ö½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½rafï¿½ï¿½  
+    final int DOWN_THREAD_NUM = 3;//ï¿½ï¿½ï¿½å¼¸ï¿½ï¿½ï¿½ß³ï¿½È¥ï¿½ï¿½ï¿½ï¿½   
     Connection[] conn = new ConnectionImpl[DOWN_THREAD_NUM];
-    DownloadThread[] threads = new DownloadThread[DOWN_THREAD_NUM];//Ïß³Ì³Ø
+    DownloadThread[] threads = new DownloadThread[DOWN_THREAD_NUM];//ï¿½ß³Ì³ï¿½
     
 	public FileDownloader(String _url) {
 		this.url = _url;		
 	}
 	
 	public void execute(){
-		// ÔÚÕâÀïÊµÏÖÄãµÄ´úÂë£¬ ×¢Òâ£º ĞèÒªÓÃ¶àÏß³ÌÊµÏÖÏÂÔØ
-		// Õâ¸öÀàÒÀÀµÓÚÆäËû¼¸¸ö½Ó¿Ú, ÄãĞèÒªĞ´Õâ¼¸¸ö½Ó¿ÚµÄÊµÏÖ´úÂë
-		// (1) ConnectionManager , ¿ÉÒÔ´ò¿ªÒ»¸öÁ¬½Ó£¬Í¨¹ıConnection¿ÉÒÔ¶ÁÈ¡ÆäÖĞµÄÒ»¶Î£¨ÓÃstartPos, endPosÀ´Ö¸¶¨£©
-		// (2) DownloadListener, ÓÉÓÚÊÇ¶àÏß³ÌÏÂÔØ£¬ µ÷ÓÃÕâ¸öÀàµÄ¿Í»§¶Ë²»ÖªµÀÊ²Ã´Ê±ºò½áÊø£¬ËùÒÔÄãĞèÒªÊµÏÖµ±ËùÓĞ
-		//     Ïß³Ì¶¼Ö´ĞĞÍêÒÔºó£¬ µ÷ÓÃlistenerµÄnotifiedFinished·½·¨£¬ ÕâÑù¿Í»§¶Ë¾ÍÄÜÊÕµ½Í¨Öª¡£
-		// ¾ßÌåµÄÊµÏÖË¼Â·£º
-		// 1. ĞèÒªµ÷ÓÃConnectionManagerµÄopen·½·¨´ò¿ªÁ¬½Ó£¬ È»ºóÍ¨¹ıConnection.getContentLength·½·¨»ñµÃÎÄ¼şµÄ³¤¶È
-		// 2. ÖÁÉÙÆô¶¯3¸öÏß³ÌÏÂÔØ£¬  ×¢ÒâÃ¿¸öÏß³ÌĞèÒªÏÈµ÷ÓÃConnectionManagerµÄopen·½·¨
-		// È»ºóµ÷ÓÃread·½·¨£¬ read·½·¨ÖĞÓĞ¶ÁÈ¡ÎÄ¼şµÄ¿ªÊ¼Î»ÖÃºÍ½áÊøÎ»ÖÃµÄ²ÎÊı£¬ ·µ»ØÖµÊÇbyte[]Êı×é
-		// 3. °ÑbyteÊı×éĞ´Èëµ½ÎÄ¼şÖĞ
-		// 4. ËùÓĞµÄÏß³Ì¶¼ÏÂÔØÍê³ÉÒÔºó£¬ ĞèÒªµ÷ÓÃlistenerµÄnotifiedFinished·½·¨
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ë£¬ ×¢ï¿½â£º ï¿½ï¿½Òªï¿½Ã¶ï¿½ï¿½ß³ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿ï¿½, ï¿½ï¿½ï¿½ï¿½ÒªĞ´ï¿½â¼¸ï¿½ï¿½ï¿½Ó¿Úµï¿½Êµï¿½Ö´ï¿½ï¿½ï¿½
+		// (1) ConnectionManager , ï¿½ï¿½ï¿½Ô´ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½Í¨ï¿½ï¿½Connectionï¿½ï¿½ï¿½Ô¶ï¿½È¡ï¿½ï¿½ï¿½Ğµï¿½Ò»ï¿½Î£ï¿½ï¿½ï¿½startPos, endPosï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½
+		// (2) DownloadListener, ï¿½ï¿½ï¿½ï¿½ï¿½Ç¶ï¿½ï¿½ß³ï¿½ï¿½ï¿½ï¿½Ø£ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Í»ï¿½ï¿½Ë²ï¿½Öªï¿½ï¿½Ê²Ã´Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÒªÊµï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½
+		//     ï¿½ß³Ì¶ï¿½Ö´ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ ï¿½ï¿½ï¿½ï¿½listenerï¿½ï¿½notifiedFinishedï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½Ë¾ï¿½ï¿½ï¿½ï¿½Õµï¿½Í¨Öªï¿½ï¿½
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½Ë¼Â·ï¿½ï¿½
+		// 1. ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ConnectionManagerï¿½ï¿½openï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½ È»ï¿½ï¿½Í¨ï¿½ï¿½Connection.getContentLengthï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ä³ï¿½ï¿½ï¿½
+		// 2. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½3ï¿½ï¿½ï¿½ß³ï¿½ï¿½ï¿½ï¿½Ø£ï¿½  ×¢ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ß³ï¿½ï¿½ï¿½Òªï¿½Èµï¿½ï¿½ï¿½ConnectionManagerï¿½ï¿½openï¿½ï¿½ï¿½ï¿½
+		// È»ï¿½ï¿½ï¿½ï¿½ï¿½readï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ readï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¶ï¿½È¡ï¿½Ä¼ï¿½ï¿½Ä¿ï¿½Ê¼Î»ï¿½ÃºÍ½ï¿½ï¿½ï¿½Î»ï¿½ÃµÄ²ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½byte[]ï¿½ï¿½ï¿½ï¿½
+		// 3. ï¿½ï¿½byteï¿½ï¿½ï¿½ï¿½Ğ´ï¿½ëµ½ï¿½Ä¼ï¿½ï¿½ï¿½
+		// 4. ï¿½ï¿½ï¿½Ğµï¿½ï¿½ß³Ì¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½listenerï¿½ï¿½notifiedFinishedï¿½ï¿½ï¿½ï¿½
 		
-		// ÏÂÃæµÄ´úÂëÊÇÊ¾Àı´úÂë£¬ Ò²¾ÍÊÇËµÖ»ÓĞÒ»¸öÏß³Ì£¬ ÄãĞèÒª¸ÄÔì³É¶àÏß³ÌµÄ¡£
+		// ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ë£¬ Ò²ï¿½ï¿½ï¿½ï¿½ËµÖ»ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ß³Ì£ï¿½ ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½É¶ï¿½ï¿½ß³ÌµÄ¡ï¿½
 
 		try {
 			conn[0] = cm.open(this.url);

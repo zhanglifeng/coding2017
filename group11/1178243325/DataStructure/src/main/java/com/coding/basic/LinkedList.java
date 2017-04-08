@@ -1,6 +1,5 @@
 package com.coding.basic;
 
-import com.coding.basic.exception.*;
 public class LinkedList implements List {
 	
 	private Node head;

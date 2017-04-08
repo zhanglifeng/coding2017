@@ -2,7 +2,7 @@
 
 <struts>
 
-    <action name="login" class="com.coderising.litestruts.LoginAction">
+    <action name="login" class="LoginAction">
 
         <result name="success">/jsp/homepage.jsp</result>
 

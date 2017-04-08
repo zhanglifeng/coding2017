@@ -1,5 +1,5 @@
 package com.coding.basic;
-import com.coding.basic.exception.*;
+
 public class Queue {
 
 	private LinkedList elementData;
