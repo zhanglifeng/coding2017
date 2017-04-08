@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
  * Created by songbao.yang on 2017/2/21.
  *
  */
-public class ArrayList implements List {
+public class ArrayList<T> implements List<T> {
 	
 	private int size = 0;
 	private Object[] elementData;
@@ -23,7 +23,7 @@ public class ArrayList implements List {
         this.elementData = new Object[0];
     }
 
-    public void add(Object o){
+    public void add(T o){
         ensureCapacity(size + 1);
 		elementData[size++] = o;
 	}
@@ -47,7 +47,7 @@ public class ArrayList implements List {
          elementData = newData;
     }
 
-	public void add(int index, Object o){
+	public void add(int index, T o){
 	    indexCheck(index);
         ensureCapacity(size+1);
         System.arraycopy(elementData, index, elementData, index+1, size-index);
@@ -55,9 +55,9 @@ public class ArrayList implements List {
         size++;
 	}
 	
-	public Object get(int index){
+	public T get(int index){
 		indexCheck(index);
-		return elementData[index];
+		return (T) elementData[index];
 	}
 
 	private void indexCheck(int index){
@@ -69,12 +69,12 @@ public class ArrayList implements List {
         }
 	}
 
-	public Object remove(int index){
+	public T remove(int index){
         indexCheck(index);
         Object rm = elementData[index];
         System.arraycopy(elementData, index+1, elementData, index, size-index-1);
         size--;
-		return rm;
+		return (T) rm;
 	}
 	
 	public int size(){
@@ -86,7 +86,7 @@ public class ArrayList implements List {
 	}
 
 	//静态内部类的访问权限不同有何区别？？
-	private class Itr implements Iterator{
+	private class Itr implements Iterator {
         private int cursor = 0;
 
         public boolean hasNext() {

@@ -41,7 +41,6 @@ public class BinaryTreeNode {
 
         BinaryTreeNode cursor = this;
         BinaryTreeNode pre = cursor;
-		//TODO 相等怎么处理
         while (cursor != null){
             pre = cursor;
             if (o.compareTo(cursor.data) < 0){

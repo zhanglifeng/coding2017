@@ -1,7 +1,5 @@
 package dataStruct.com.coderising.array;
 
-import dataStruct.com.coderising.array.ArrayUtil;
-
 public class ArrayUtil {
 	
 	/**
