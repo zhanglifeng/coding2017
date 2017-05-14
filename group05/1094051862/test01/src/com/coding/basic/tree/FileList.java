@@ -4,7 +4,7 @@ import java.io.File;
 
 public class FileList {
 	
-	public static void list(File f) {	
+	public void list(File f) {	
 		if (!f.exists()) {
 			return;
 		}
@@ -14,9 +14,9 @@ public class FileList {
 			for (File file : files) {
 				list(file);
 			}
-		} 
-		if (f.isFile()) {
+		} else  {
 			System.out.println("file:" + f.getAbsolutePath());
 		}
 	}
+	
 }
