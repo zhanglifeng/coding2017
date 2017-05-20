@@ -1,10 +1,11 @@
 package com.coding.basic.tree;
 
+
 public class BinaryTreeNode<T> {
 	
-	private T data;
-	private BinaryTreeNode<T> left;
-	private BinaryTreeNode<T> right;
+	public T data;
+	public BinaryTreeNode<T> left;
+	public BinaryTreeNode<T> right;
 	
 	public BinaryTreeNode(T data){
 		this.data=data;
@@ -30,12 +31,6 @@ public class BinaryTreeNode<T> {
 	
 	public BinaryTreeNode<T> insert(Object o){
 		return  null;
-	}
-	public boolean hasLeft() {
-		return left!=null;
-	}
-	public boolean hasRight() {
-		return right!=null;
 	}
 	
 }
