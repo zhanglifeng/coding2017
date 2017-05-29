@@ -45,16 +45,17 @@ public class BinaryTreeUtil {
 		return result;
 	}
 	private static <T> void inOrderVositRecursion(List<T> result, BinaryTreeNode<T> node) {
-		if (node != null) {
-			if (node.getLeft() != null) {
-				inOrderVositRecursion(result, node.getLeft());
-			}
-			result.add(node.getData());
-			if (node.getRight() != null) {
-				inOrderVositRecursion(result, node.getRight());
-			}
-			
+		if (node == null) {
+			return;
 		}
+		if (node.getLeft() != null) {
+			inOrderVositRecursion(result, node.getLeft());
+		}
+		result.add(node.getData());
+		if (node.getRight() != null) {
+			inOrderVositRecursion(result, node.getRight());
+		}
+		
 	}
 
 	public static <T> List<T> inOrderVisit2(BinaryTreeNode<T> root) {
