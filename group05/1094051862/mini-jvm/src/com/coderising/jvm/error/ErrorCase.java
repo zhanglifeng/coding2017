@@ -14,7 +14,11 @@ public class ErrorCase {
 	}
 	
 	public void stackOverFlowErrorCase() {
-		stackOverFlowErrorCase();
+		while (true) {
+			new String("abc");
+		}
 	}
+	
+
 	
 }
