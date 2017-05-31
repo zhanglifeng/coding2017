@@ -45,16 +45,17 @@ public class BinaryTreeUtil {
 		return result;
 	}
 	private static <T> void inOrderVositRecursion(List<T> result, BinaryTreeNode<T> node) {
-		if (node != null) {
-			if (node.hasLeft()) {
-				inOrderVositRecursion(result, node.getLeft());
-			}
-			result.add(node.getData());
-			if (node.hasRight()) {
-				inOrderVositRecursion(result, node.getRight());
-			}
-			
+		if (node == null) {
+			return;
 		}
+		if (node.getLeft() != null) {
+			inOrderVositRecursion(result, node.getLeft());
+		}
+		result.add(node.getData());
+		if (node.getRight() != null) {
+			inOrderVositRecursion(result, node.getRight());
+		}
+		
 	}
 
 	public static <T> List<T> inOrderVisit2(BinaryTreeNode<T> root) {
@@ -106,10 +107,10 @@ public class BinaryTreeUtil {
 	}
 	private static <T> void postOrderRecursion(List<T> result, BinaryTreeNode<T> node) {
 		if (node!=null) {
-			if (node.hasLeft()) {
+			if (node.getLeft() != null) {
 				postOrderRecursion(result, node.getLeft());
 			}
-			if (node.hasRight()) {
+			if (node.getRight() != null) {
 				postOrderRecursion(result, node.getRight());
 			}
 			result.add(node.getData());
@@ -163,10 +164,10 @@ public class BinaryTreeUtil {
 			while(!stack.isEmpty()) {
 				root = stack.pop();
 				result.add(root.getData());
-				if (root.hasRight()) {
+				if (root.getRight() != null) {
 					stack.push(root.getRight());
 				}
-				if (root.hasLeft()) {
+				if (root.getLeft() != null) {
 					stack.push(root.getLeft());
 				}
 			}
